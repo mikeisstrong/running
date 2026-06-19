@@ -1321,17 +1321,8 @@ const Onboarding = {
     } else if (this.step === 2) {
       const key = document.getElementById('ob-api-key').value.trim();
       if (!key.startsWith('sk-ant-')) { this.showError('api-error', 'Key should start with sk-ant-'); this.shake('ob-api-key'); return; }
-      document.getElementById('ob-btn').disabled = true;
-      document.getElementById('ob-btn').textContent = 'Verifying…';
-      try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method:'POST', headers:{'x-api-key':key,'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-          body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:10, messages:[{role:'user',content:'hi'}] })
-        });
-        if (!res.ok) throw new Error();
-        S.set('anthropic_api_key', key);
-        this.step = 3; this.updateUI();
-      } catch { this.showError('api-error', "That key didn't work — try again."); this.shake('ob-api-key'); document.getElementById('ob-btn').disabled = false; document.getElementById('ob-btn').textContent = 'Verify & Continue →'; }
+      S.set('anthropic_api_key', key);
+      this.step = 3; this.updateUI();
     } else if (this.step === 3) {
       const dateVal = document.getElementById('ob-start-date').value;
       if (!dateVal) { this.showError('date-error', 'Please pick a date.'); return; }
