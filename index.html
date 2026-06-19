@@ -25,9 +25,10 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-u
 .ob-logo{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ember);margin-bottom:24px}
 .ob-heading{font-size:26px;font-weight:500;color:var(--text);line-height:1.15;letter-spacing:-.02em;margin-bottom:8px}
 .ob-sub{font-size:14px;color:var(--secondary);line-height:1.65;margin-bottom:32px}
-.ob-step{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px;transition:border-color .2s}
+.ob-step{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px;transition:border-color .2s,opacity .2s}
 .ob-step.active{border-color:var(--ember)}
-.ob-step.done{border-color:var(--green);opacity:.7}
+.ob-step.done{border-color:var(--green);opacity:.65}
+.ob-step.locked{opacity:.35;pointer-events:none}
 .ob-step-num{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);margin-bottom:6px}
 .ob-step.done .ob-step-num{color:var(--green)}
 .ob-step-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:4px}
@@ -36,13 +37,16 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-u
 .ob-input:focus{border-color:var(--ember)}
 .ob-input.error{border-color:var(--red);animation:shake .3s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.ob-error{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--red);margin-top:6px;display:none}
+.ob-error{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--red);margin-top:8px;display:none;padding:6px 8px;background:rgba(168,40,40,.06);border-radius:4px}
+.ob-status{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:10px;padding:8px 10px;border-radius:4px;display:none;align-items:center;gap:6px}
+.ob-status.loading{display:flex;background:rgba(176,114,8,.07);color:var(--amber)}
+.ob-status.success{display:flex;background:rgba(45,122,72,.08);color:var(--green)}
+.ob-status.error{display:flex;background:rgba(168,40,40,.06);color:var(--red)}
+.ob-status-spinner{width:10px;height:10px;border:1.5px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 .ob-btn{width:100%;padding:13px;background:var(--ember);color:#fff;border:none;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:20px;transition:background .2s}
 .ob-btn:hover{background:var(--ember-dk)}
 .ob-btn:disabled{background:var(--muted);cursor:not-allowed}
-.ob-btn-secondary{background:transparent;color:var(--ember);border:1px solid var(--ember);margin-top:8px}
-.ob-btn-secondary:hover{background:rgba(212,82,26,.06)}
-.ob-done-screen{text-align:center;padding:40px 0}
+.ob-done-screen{text-align:center;padding:40px 0;display:none}
 .ob-done-title{font-size:22px;font-weight:500;color:var(--green);margin-bottom:8px}
 .ob-done-sub{font-size:13px;color:var(--secondary)}
 
@@ -238,33 +242,33 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-u
   <div class="ob-heading">Let's set up<br>your app.</div>
   <p class="ob-sub">Three steps, then it's fully automatic every time you open it.</p>
 
-  <div class="ob-step" id="step1">
-    <div class="ob-step-num">Step 01</div>
+  <div class="ob-step active" id="step1">
+    <div class="ob-step-num" id="step1-num">Step 01</div>
     <div class="ob-step-title">Strava credentials</div>
     <div class="ob-step-detail">Create a free Strava API app at <strong>strava.com/settings/api</strong> — use this page's URL as the redirect. Then paste your Client ID and Client Secret below.</div>
     <input class="ob-input" id="ob-client-id" type="text" placeholder="Client ID (numbers only)" inputmode="numeric">
     <input class="ob-input" id="ob-client-secret" type="password" placeholder="Client Secret">
-    <div class="ob-error" id="strava-error">Couldn't connect — check your credentials and try again.</div>
+    <div class="ob-status" id="strava-status"></div>
   </div>
 
-  <div class="ob-step" id="step2" style="opacity:.4">
+  <div class="ob-step locked" id="step2">
     <div class="ob-step-num">Step 02</div>
     <div class="ob-step-title">Anthropic API key</div>
     <div class="ob-step-detail">Paste your key from console.anthropic.com — it stays in your browser only and powers the daily briefing.</div>
     <input class="ob-input" id="ob-api-key" type="password" placeholder="sk-ant-..." disabled>
-    <div class="ob-error" id="api-error">That key didn't work — try again.</div>
+    <div class="ob-status" id="api-status"></div>
   </div>
 
-  <div class="ob-step" id="step3" style="opacity:.4">
+  <div class="ob-step locked" id="step3">
     <div class="ob-step-num">Step 03</div>
     <div class="ob-step-title">When does Week 1 start?</div>
     <div class="ob-step-detail">Pick the Monday your 12-week plan begins. Everything anchors to this date.</div>
     <input class="ob-input" id="ob-start-date" type="date" disabled>
-    <div class="ob-error" id="date-error">Pick a Monday please.</div>
+    <div class="ob-status" id="date-status"></div>
   </div>
 
   <button class="ob-btn" id="ob-btn">Connect Strava →</button>
-  <div id="ob-done" class="ob-done-screen" style="display:none">
+  <div id="ob-done" class="ob-done-screen">
     <div class="ob-done-title">You're set up.</div>
     <div class="ob-done-sub">Loading your data…</div>
   </div>
@@ -1280,38 +1284,63 @@ const Planner = {
 const Onboarding = {
   step: 1,
 
-  init() {
-    // Set default start date to this Monday
-    const mon = weekMonday();
-    document.getElementById('ob-start-date').value = mon.toISOString().slice(0,10);
+  setStatus(id, type, msg) {
+    const el = document.getElementById(id);
+    el.className = `ob-status ${type}`;
+    el.innerHTML = type === 'loading'
+      ? `<div class="ob-status-spinner"></div>${msg}`
+      : `<span>${type === 'success' ? '✓' : '✗'}</span> ${msg}`;
+  },
 
-    // Check if returning from Strava OAuth
+  clearStatus(id) {
+    const el = document.getElementById(id);
+    el.className = 'ob-status';
+    el.innerHTML = '';
+  },
+
+  init() {
+    document.getElementById('ob-start-date').value = weekMonday().toISOString().slice(0,10);
+    document.getElementById('ob-btn').onclick = () => this.handleStep();
+
     const params = new URLSearchParams(location.search);
     const code = params.get('code');
     const error = params.get('error');
-    if (error) { this.showError('strava-error', 'Strava authorization denied. Try again.'); return; }
+
+    if (error) {
+      this.setStatus('strava-status', 'error', 'Strava authorization denied. Try again.');
+      return;
+    }
     if (code) {
       history.replaceState({}, '', location.pathname);
       this.handleStravaCallback(code);
-      return;
     }
-    document.getElementById('ob-btn').onclick = () => this.handleStep();
   },
 
   async handleStravaCallback(code) {
+    // Show step 1 as active with loading state
+    document.getElementById('step1').classList.remove('locked');
+    document.getElementById('step1').classList.add('active');
     document.getElementById('ob-btn').disabled = true;
     document.getElementById('ob-btn').textContent = 'Finishing Strava connection…';
+    this.setStatus('strava-status', 'loading', 'Exchanging token with Strava…');
+
     try {
-      // Timeout after 15s so it never hangs forever
       const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 15000));
       await Promise.race([Strava.handleCallback(code), timeout]);
+
+      this.setStatus('strava-status', 'success', 'Strava connected successfully');
+      document.getElementById('step1').classList.remove('active');
+      document.getElementById('step1').classList.add('done');
+
+      // Brief pause so user sees the success, then advance
+      await new Promise(r => setTimeout(r, 800));
       this.step = 2;
-      this.updateUI();
+      this.activateStep(2);
     } catch (e) {
       const msg = e.message === 'timeout'
-        ? 'Strava took too long — try again.'
-        : 'Token exchange failed. Double-check your Client Secret.';
-      this.showError('strava-error', msg);
+        ? 'Took too long — check your connection and try again.'
+        : 'Token exchange failed — double-check your Client Secret.';
+      this.setStatus('strava-status', 'error', msg);
       document.getElementById('ob-btn').disabled = false;
       document.getElementById('ob-btn').textContent = 'Connect Strava →';
     }
@@ -1321,49 +1350,71 @@ const Onboarding = {
     if (this.step === 1) {
       const id = document.getElementById('ob-client-id').value.trim();
       const secret = document.getElementById('ob-client-secret').value.trim();
-      if (!id || !secret) { this.showError('strava-error', 'Both fields required.'); return; }
+      if (!id || !secret) {
+        this.setStatus('strava-status', 'error', 'Both Client ID and Client Secret are required.');
+        return;
+      }
       S.set('strava_client_id', id);
       S.set('strava_client_secret', secret);
+      this.setStatus('strava-status', 'loading', 'Redirecting to Strava…');
       document.getElementById('ob-btn').disabled = true;
-      document.getElementById('ob-btn').textContent = 'Redirecting to Strava…';
+      document.getElementById('ob-btn').textContent = 'Redirecting…';
       const redirectUri = location.origin + location.pathname.replace(/\/$/, '');
+      // Synchronous redirect — must happen immediately in click handler
       location.href = `${STRAVA_AUTH_URL}?client_id=${id}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=activity:read_all&approval_prompt=auto`;
-      return;
+
     } else if (this.step === 2) {
       const key = document.getElementById('ob-api-key').value.trim();
-      if (!key.startsWith('sk-ant-')) { this.showError('api-error', 'Key should start with sk-ant-'); this.shake('ob-api-key'); return; }
+      if (!key.startsWith('sk-ant-')) {
+        this.setStatus('api-status', 'error', 'Key should start with sk-ant-');
+        document.getElementById('ob-api-key').classList.add('error');
+        setTimeout(() => document.getElementById('ob-api-key').classList.remove('error'), 400);
+        return;
+      }
       S.set('anthropic_api_key', key);
-      this.step = 3; this.updateUI();
+      this.setStatus('api-status', 'success', 'API key saved');
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step2').classList.add('done');
+      setTimeout(() => { this.step = 3; this.activateStep(3); }, 600);
+
     } else if (this.step === 3) {
       const dateVal = document.getElementById('ob-start-date').value;
-      if (!dateVal) { this.showError('date-error', 'Please pick a date.'); return; }
+      if (!dateVal) { this.setStatus('date-status', 'error', 'Please pick a date.'); return; }
       const d = new Date(dateVal + 'T12:00:00');
-      if (d.getDay() !== 1) { this.showError('date-error', 'Pick a Monday please.'); this.shake('ob-start-date'); return; }
+      if (d.getDay() !== 1) {
+        this.setStatus('date-status', 'error', 'Please pick a Monday.');
+        document.getElementById('ob-start-date').classList.add('error');
+        setTimeout(() => document.getElementById('ob-start-date').classList.remove('error'), 400);
+        return;
+      }
       S.set('plan_start_date', dateVal);
       S.set('onboarding_complete', true);
-      document.getElementById('ob-done').style.display = 'block';
-      document.getElementById('onboarding').querySelector('.ob-btn').style.display = 'none';
-      [...document.querySelectorAll('.ob-step')].forEach(s => s.style.display = 'none');
-      setTimeout(() => App.launch(), 1500);
+      this.setStatus('date-status', 'success', 'Plan start date set — launching…');
+      document.getElementById('step3').classList.remove('active');
+      document.getElementById('step3').classList.add('done');
+      document.getElementById('ob-btn').style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('ob-done').style.display = 'block';
+        setTimeout(() => App.launch(), 1200);
+      }, 600);
     }
   },
 
-  updateUI() {
+  activateStep(num) {
+    const el = document.getElementById(`step${num}`);
+    el.classList.remove('locked');
+    el.classList.add('active');
     document.getElementById('ob-btn').disabled = false;
-    const steps = [null, document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
-    steps.forEach((s,i) => { if (!s) return; s.style.opacity = i <= this.step ? '1' : '0.4'; s.classList.toggle('active', i===this.step); s.classList.toggle('done', i<this.step); });
-    if (this.step === 2) {
-      document.getElementById('ob-api-key').disabled = false; document.getElementById('ob-api-key').focus();
-      document.getElementById('ob-btn').textContent = 'Verify & Continue →';
-      document.getElementById('ob-step-num-2')?.classList.add('done');
-    } else if (this.step === 3) {
+
+    if (num === 2) {
+      document.getElementById('ob-api-key').disabled = false;
+      document.getElementById('ob-api-key').focus();
+      document.getElementById('ob-btn').textContent = 'Save key & continue →';
+    } else if (num === 3) {
       document.getElementById('ob-start-date').disabled = false;
       document.getElementById('ob-btn').textContent = 'Start training →';
     }
   },
-
-  showError(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.style.display='block'; setTimeout(()=>el.style.display='none',4000); },
-  shake(id) { const el=document.getElementById(id); el.classList.add('error'); setTimeout(()=>el.classList.remove('error'),400); },
 };
 
 // ═══════════════════════════════════════════════════════════
