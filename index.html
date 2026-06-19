@@ -1310,14 +1310,18 @@ const Onboarding = {
     }
   },
 
-  async handleStep() {
+  handleStep() {
     if (this.step === 1) {
       const id = document.getElementById('ob-client-id').value.trim();
       const secret = document.getElementById('ob-client-secret').value.trim();
       if (!id || !secret) { this.showError('strava-error', 'Both fields required.'); return; }
+      S.set('strava_client_id', id);
+      S.set('strava_client_secret', secret);
       document.getElementById('ob-btn').disabled = true;
       document.getElementById('ob-btn').textContent = 'Redirecting to Strava…';
-      await Strava.connect(id, secret);
+      const redirectUri = location.origin + location.pathname.replace(/\/$/, '');
+      location.href = `${STRAVA_AUTH_URL}?client_id=${id}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=activity:read_all&approval_prompt=auto`;
+      return;
     } else if (this.step === 2) {
       const key = document.getElementById('ob-api-key').value.trim();
       if (!key.startsWith('sk-ant-')) { this.showError('api-error', 'Key should start with sk-ant-'); this.shake('ob-api-key'); return; }
