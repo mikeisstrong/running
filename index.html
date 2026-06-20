@@ -7,226 +7,233 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#f5f3ef; --surface:#fff; --panel:#edeae4; --border:#d4d0c8;
-  --muted:#b8b4aa; --text:#1a1916; --secondary:#4a4844; --dim:#888480;
-  --ember:#d4521a; --ember-dk:#b84010; --ember-lt:#e87048;
-  --green:#2d7a48; --amber:#b07208; --blue:#2a6cb5; --red:#a82828;
+  --bg:#1a1a2e; --surface:#12122a; --panel:#2d2b55; --border:#4a4878;
+  --muted:#6060a0; --text:#f8f8f8; --secondary:#c0c0e0; --dim:#8080b0;
+  --gold:#f8b800; --red:#e40058; --green:#00a800; --blue:#3b5dc9;
+  --brick:#c86400; --sky:#5c94fc;
+  /* legacy aliases for old JS refs */
+  --ember:#e40058; --ember-dk:#b00040; --ember-lt:#ff4080;
+  --amber:#f8b800;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-ui,sans-serif;font-weight:300;font-size:15px;line-height:1.65;min-height:100vh}
+body{background:var(--bg);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:14px;line-height:1.65;min-height:100vh}
+.pixel{font-family:'Press Start 2P',monospace}
 .mono{font-family:'IBM Plex Mono',monospace}
 
 /* ── ONBOARDING ── */
-#onboarding{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:40px 24px;max-width:480px;margin:0 auto}
-.ob-logo{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ember);margin-bottom:24px}
-.ob-heading{font-size:26px;font-weight:500;color:var(--text);line-height:1.15;letter-spacing:-.02em;margin-bottom:8px}
-.ob-sub{font-size:14px;color:var(--secondary);line-height:1.65;margin-bottom:32px}
-.ob-step{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px;transition:border-color .2s,opacity .2s}
-.ob-step.active{border-color:var(--ember)}
-.ob-step.done{border-color:var(--green);opacity:.65}
-.ob-step.locked{opacity:.35;pointer-events:none}
-.ob-step-num{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);margin-bottom:6px}
+#onboarding{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:32px 20px;max-width:480px;margin:0 auto;background:var(--bg)}
+.ob-logo{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px}
+.ob-heading{font-family:'Press Start 2P',monospace;font-size:13px;color:var(--gold);line-height:1.9;margin-bottom:12px}
+.ob-sub{font-size:12px;color:var(--secondary);line-height:1.7;margin-bottom:28px}
+.ob-step{background:var(--surface);border:3px solid var(--border);padding:16px;margin-bottom:10px;transition:border-color .2s,opacity .2s}
+.ob-step.active{border-color:var(--gold)}
+.ob-step.done{border-color:var(--green);opacity:.6}
+.ob-step.locked{opacity:.25;pointer-events:none}
+.ob-step-num{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em}
 .ob-step.done .ob-step-num{color:var(--green)}
-.ob-step-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:4px}
-.ob-step-detail{font-size:12px;color:var(--secondary);line-height:1.55}
-.ob-input{width:100%;padding:10px 12px;background:var(--panel);border:1px solid var(--border);border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text);margin-top:10px;outline:none;transition:border-color .2s}
-.ob-input:focus{border-color:var(--ember)}
+.ob-step-title{font-family:'Press Start 2P',monospace;font-size:8px;color:var(--text);margin-bottom:8px;line-height:1.8}
+.ob-step-detail{font-size:12px;color:var(--secondary);line-height:1.65}
+.ob-input{width:100%;padding:10px 12px;background:var(--panel);border:2px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:13px;margin-top:10px;outline:none;transition:border-color .2s}
+.ob-input:focus{border-color:var(--gold)}
 .ob-input.error{border-color:var(--red);animation:shake .3s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.ob-error{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--red);margin-top:8px;display:none;padding:6px 8px;background:rgba(168,40,40,.06);border-radius:4px}
-.ob-status{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:10px;padding:8px 10px;border-radius:4px;display:none;align-items:center;gap:6px}
-.ob-status.loading{display:flex;background:rgba(176,114,8,.07);color:var(--amber)}
-.ob-status.success{display:flex;background:rgba(45,122,72,.08);color:var(--green)}
-.ob-status.error{display:flex;background:rgba(168,40,40,.06);color:var(--red)}
+.ob-status{font-size:11px;margin-top:10px;padding:8px 10px;display:none;align-items:center;gap:6px;border:2px solid currentColor}
+.ob-status.loading{display:flex;color:var(--gold)}
+.ob-status.success{display:flex;color:var(--green)}
+.ob-status.error{display:flex;color:var(--red)}
 .ob-status-spinner{width:10px;height:10px;border:1.5px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-.ob-btn{width:100%;padding:13px;background:var(--ember);color:#fff;border:none;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:20px;transition:background .2s}
-.ob-btn:hover{background:var(--ember-dk)}
-.ob-btn:disabled{background:var(--muted);cursor:not-allowed}
+.ob-btn{width:100%;padding:14px;background:var(--red);color:var(--text);border:none;box-shadow:inset -3px -3px 0 #800030,inset 3px 3px 0 #ff6090;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:20px}
+.ob-btn:active{box-shadow:inset 3px 3px 0 #800030,inset -3px -3px 0 #ff6090;transform:translate(2px,2px)}
+.ob-btn:disabled{background:var(--muted);box-shadow:none;cursor:not-allowed;color:var(--dim)}
 .ob-done-screen{text-align:center;padding:40px 0;display:none}
-.ob-done-title{font-size:22px;font-weight:500;color:var(--green);margin-bottom:8px}
-.ob-done-sub{font-size:13px;color:var(--secondary)}
+.ob-done-title{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--green);margin-bottom:12px;line-height:1.8}
+.ob-done-sub{font-size:12px;color:var(--secondary)}
 
 /* ── MAIN APP ── */
 #app{display:none;max-width:480px;margin:0 auto;padding-bottom:40px}
 
-/* Status bar sim */
-.app-statusbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px 0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--secondary)}
-.strava-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px}
+/* Status bar */
+.app-statusbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px 0;font-size:10px;color:var(--dim)}
+.strava-dot{width:6px;height:6px;background:var(--green);display:inline-block;margin-right:4px}
 .strava-dot.offline{background:var(--muted)}
 
 /* App header */
-.app-header{padding:16px 16px 14px;border-bottom:1px solid var(--border)}
-.app-week-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ember);margin-bottom:6px}
-.app-title{font-size:24px;font-weight:500;color:var(--ember);letter-spacing:-.01em;line-height:1.1;margin-bottom:8px}
-.app-meta-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.chip{display:inline-flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:3px}
-.chip-green{background:rgba(45,122,72,.12);color:var(--green)}
-.chip-amber{background:rgba(176,114,8,.12);color:var(--amber)}
-.chip-ember{background:rgba(212,82,26,.12);color:var(--ember)}
-.chip-blue{background:rgba(42,108,181,.12);color:var(--blue)}
-.chip-red{background:rgba(168,40,40,.12);color:var(--red)}
-.chip-dim{background:var(--panel);color:var(--dim);border:1px solid var(--border)}
-.plan-week-link{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:.06em;text-decoration:none;padding:3px 8px;border:1px solid rgba(42,108,181,.3);border-radius:3px;cursor:pointer;background:none}
-.race-countdown{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-top:8px}
-.race-countdown span{color:var(--secondary)}
+.app-header{padding:16px;border-bottom:3px solid var(--border);background:var(--surface)}
+.app-week-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.app-title{font-family:'Press Start 2P',monospace;font-size:13px;color:var(--gold);line-height:1.9;margin-bottom:10px}
+.app-meta-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:'Press Start 2P',monospace;font-size:6px;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border:2px solid currentColor}
+.chip-green{color:var(--green)}
+.chip-amber{color:var(--gold)}
+.chip-ember{color:var(--red)}
+.chip-blue{color:var(--sky)}
+.chip-red{color:var(--red)}
+.chip-dim{color:var(--dim);border-color:var(--dim)}
+.race-countdown{font-size:10px;color:var(--dim);margin-top:10px;cursor:pointer}
+.race-countdown span{color:var(--gold)}
 
 /* Sections */
-.section{padding:14px 16px;border-bottom:1px solid var(--border)}
+.section{padding:14px 16px;border-bottom:3px solid var(--border)}
 .section:last-child{border-bottom:none}
-.section-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.section-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid var(--brick)}
 
 /* Today's session */
-.session-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
-.session-type{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ember);margin-bottom:4px}
-.session-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
-.session-detail{font-size:12px;color:var(--secondary);line-height:1.55}
-.session-rest{font-size:13px;color:var(--dim);font-style:italic}
+.session-card{background:var(--surface);border:3px solid var(--brick);padding:12px 14px}
+.session-type{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--brick);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.session-name{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--text);margin-bottom:10px;line-height:1.8}
+.session-detail{font-size:12px;color:var(--secondary);line-height:1.65}
+.session-rest{font-size:12px;color:var(--dim);font-style:italic}
+.session-mismatch{font-size:11px;color:var(--gold);margin-top:8px;padding:6px 8px;border:2px solid var(--gold);background:rgba(248,184,0,.08)}
 
 /* Briefing */
 .briefing-loading{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
-.spinner{width:12px;height:12px;border:1.5px solid var(--border);border-top-color:var(--ember);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+.spinner{width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
-.briefing-narrative{font-size:13px;font-style:italic;color:var(--dim);border-left:2px solid var(--border);padding-left:10px;line-height:1.65;margin-bottom:10px}
-.briefing-coaching{font-size:13px;color:var(--secondary);line-height:1.7;margin-bottom:10px}
+.briefing-narrative{font-size:13px;font-style:italic;color:var(--secondary);border-left:3px solid var(--gold);padding-left:12px;line-height:1.75;margin-bottom:12px}
+.briefing-coaching{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:10px}
 .briefing-badges{display:flex;gap:5px;flex-wrap:wrap}
-.briefing-stale{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:8px}
+.briefing-stale{font-size:10px;color:var(--dim);margin-top:8px}
+.briefing-error{border:2px solid var(--red);padding:10px;margin-top:4px}
+.briefing-error-msg{font-size:11px;color:var(--red);margin-bottom:8px}
+.briefing-retry{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text);background:var(--red);border:none;padding:8px 12px;cursor:pointer;box-shadow:inset -2px -2px 0 #800030,inset 2px 2px 0 #ff6090}
+.briefing-retry:active{box-shadow:inset 2px 2px 0 #800030,inset -2px -2px 0 #ff6090;transform:translate(1px,1px)}
 
 /* Week checklist */
-.checklist-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
+.checklist-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:2px solid var(--border);font-size:12px}
 .checklist-item:last-child{border-bottom:none}
-.check-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.dot-done{background:var(--green)}
-.dot-today{background:var(--amber)}
-.dot-upcoming{background:transparent;border:1.5px solid var(--muted)}
-.dot-missed{background:var(--red)}
+.check-dot{width:10px;height:10px;flex-shrink:0;border:2px solid var(--border)}
+.dot-done{background:var(--gold);border-color:var(--gold)}
+.dot-today{background:var(--green);border-color:var(--green)}
+.dot-upcoming{background:transparent;border-color:var(--dim)}
+.dot-missed{background:var(--red);border-color:var(--red)}
 .check-label{flex:1;color:var(--secondary)}
-.check-label.today{color:var(--amber)}
+.check-label.today{color:var(--green)}
 .check-label.done{color:var(--dim)}
 .check-label.missed{color:var(--red)}
+.check-actual{font-size:10px;color:var(--dim);font-style:italic}
+.check-actual.mismatch{color:var(--gold)}
 
 /* Stats */
-.stat-row{display:flex;gap:6px;margin-bottom:8px}
-.stat{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px;text-align:center}
-.stat-period{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
-.stat-num{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500;color:var(--text);line-height:1;margin-bottom:3px}
-.stat-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--secondary)}
+.stat-row{display:flex;gap:4px;margin-bottom:8px}
+.stat{flex:1;background:var(--surface);border:3px solid var(--border);padding:10px;text-align:center}
+.stat-period{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.stat-num{font-family:'Press Start 2P',monospace;font-size:18px;color:var(--gold);line-height:1;margin-bottom:4px}
+.stat-sub{font-size:10px;color:var(--secondary)}
 
 /* Progress */
-.progress-label{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:4px}
-.progress-bar{background:var(--panel);border:1px solid var(--border);border-radius:4px;overflow:hidden;height:6px}
-.progress-fill{height:100%;background:var(--ember);border-radius:4px;transition:width .5s}
+.progress-label{display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-bottom:4px}
+.progress-bar{background:var(--panel);border:2px solid var(--border);overflow:hidden;height:12px}
+.progress-fill{height:100%;background:var(--gold);transition:width .5s}
 .progress-fill.green{background:var(--green)}
-.progress-note{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px}
+.progress-note{font-size:9px;color:var(--dim);margin-top:4px}
 
 /* Projection */
-.projection-big{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
-.projection-num{font-family:'IBM Plex Mono',monospace;font-size:30px;font-weight:500;color:var(--text);line-height:1}
-.projection-sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--secondary)}
+.projection-big{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.projection-num{font-family:'Press Start 2P',monospace;font-size:24px;color:var(--gold);line-height:1}
+.projection-sub{font-size:11px;color:var(--secondary)}
 
 /* Mini chart */
 .mini-chart{display:flex;align-items:flex-end;gap:2px;height:48px}
-.mini-bar{flex:1;border-radius:2px 2px 0 0;background:var(--muted);min-height:3px}
-.mini-bar.hi{background:var(--ember)}
+.mini-bar{flex:1;background:var(--muted);min-height:3px}
+.mini-bar.hi{background:var(--gold)}
 .mini-bar.green{background:var(--green)}
-.chart-labels{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px}
+.chart-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--dim);margin-top:4px}
 
 /* Pace scatter */
 .pace-chart{position:relative;height:80px;margin:8px 0;overflow:hidden}
 .pace-chart svg{width:100%;height:100%}
 
 /* Gamification */
-.title-display{text-align:center;padding:20px 16px 14px;border-bottom:1px solid var(--border)}
-.current-title-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
-.current-title{font-size:22px;font-weight:500;color:var(--ember);letter-spacing:-.01em;margin-bottom:4px}
-.current-title.mission{font-size:26px}
-.title-earned-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.1em}
+.title-display{text-align:center;padding:20px 16px 14px;border-bottom:3px solid var(--border);background:var(--surface)}
+.current-title-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+.current-title{font-family:'Press Start 2P',monospace;font-size:14px;color:var(--gold);line-height:1.8;margin-bottom:6px}
+.current-title.mission{font-size:16px;color:var(--green)}
+.title-earned-label{font-size:10px;color:var(--dim)}
 
-.streak-card{display:flex;align-items:center;justify-content:space-between;background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin-bottom:8px}
-.streak-left{}
+.streak-card{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:3px solid var(--border);padding:12px 14px;margin-bottom:8px}
 .streak-label{font-size:12px;color:var(--secondary);margin-bottom:3px}
 .streak-note{font-size:11px;color:var(--dim);font-style:italic}
-.streak-num{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:500;color:var(--ember);line-height:1}
+.streak-num{font-family:'Press Start 2P',monospace;font-size:24px;color:var(--gold);line-height:1}
 
-.unlock-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.unlock-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:2px solid var(--border)}
 .unlock-item:last-child{border-bottom:none}
-.unlock-icon{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.icon-earned{background:rgba(45,122,72,.12);color:var(--green)}
-.icon-progress{background:rgba(212,82,26,.08);color:var(--ember)}
-.icon-locked{background:var(--panel);border:1px solid var(--border);color:var(--dim)}
+.unlock-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;border:2px solid var(--border)}
+.icon-earned{border-color:var(--green);color:var(--green)}
+.icon-progress{border-color:var(--gold);color:var(--gold)}
+.icon-locked{border-color:var(--dim);color:var(--dim)}
 .unlock-text{flex:1;min-width:0}
-.unlock-name{font-size:12px;color:var(--text);line-height:1.3}
-.unlock-name.locked{color:var(--secondary)}
-.unlock-cond{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:1px}
-.unlock-state{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.04em;white-space:nowrap}
+.unlock-name{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--text);line-height:1.8}
+.unlock-name.locked{color:var(--dim)}
+.unlock-cond{font-size:10px;color:var(--dim);margin-top:3px}
+.unlock-state{font-size:9px;white-space:nowrap}
 .state-earned{color:var(--green)}
-.state-progress{color:var(--amber)}
+.state-progress{color:var(--gold)}
 .state-locked{color:var(--dim)}
 
 /* VS cards */
-.vs-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:6px}
-.vs-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.vs-card{background:var(--surface);border:3px solid var(--border);padding:10px 12px;margin-bottom:6px}
+.vs-label{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
 .vs-row{display:flex;align-items:center;justify-content:space-between}
 .vs-side{text-align:center}
-.vs-period{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:3px}
-.vs-num{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500}
-.vs-delta{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px}
-.delta-good{color:var(--green);background:rgba(45,122,72,.1)}
-.delta-bad{color:var(--red);background:rgba(168,40,40,.1)}
-.delta-same{color:var(--dim);background:var(--panel)}
+.vs-period{font-size:9px;color:var(--dim);margin-bottom:3px}
+.vs-num{font-family:'Press Start 2P',monospace;font-size:16px}
+.vs-delta{font-size:10px;font-weight:500;padding:3px 8px;border:2px solid currentColor}
+.delta-good{color:var(--green)}
+.delta-bad{color:var(--red)}
+.delta-same{color:var(--dim)}
 
 /* Effort bar */
-.effort-bar{display:flex;height:10px;border-radius:3px;overflow:hidden;gap:1px;margin:8px 0}
+.effort-bar{display:flex;height:12px;gap:2px;margin:8px 0;border:2px solid var(--border)}
 .effort-segment{height:100%;transition:flex .5s}
 
 /* ── SUNDAY PLANNER ── */
-#planner-overlay{position:fixed;inset:0;background:rgba(26,25,22,.6);z-index:100;display:none;flex-direction:column;justify-content:flex-end;max-width:480px;margin:0 auto}
+#planner-overlay{position:fixed;inset:0;background:rgba(10,10,20,.8);z-index:100;display:none;flex-direction:column;justify-content:flex-end;max-width:480px;margin:0 auto}
 #planner-overlay.open{display:flex}
-.planner-sheet{background:var(--surface);border-radius:16px 16px 0 0;padding:20px 16px 32px;max-height:85vh;overflow-y:auto}
-.planner-handle{width:32px;height:3px;background:var(--muted);border-radius:2px;margin:0 auto 16px}
-.planner-title{font-size:16px;font-weight:500;color:var(--text);margin-bottom:4px}
+.planner-sheet{background:var(--surface);border-top:4px solid var(--gold);padding:20px 16px 32px;max-height:85vh;overflow-y:auto}
+.planner-handle{width:32px;height:3px;background:var(--muted);margin:0 auto 16px}
+.planner-title{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:8px;line-height:1.8}
 .planner-sub{font-size:12px;color:var(--secondary);margin-bottom:14px;line-height:1.5}
-.planner-day{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:6px;margin-bottom:5px;border:1px solid var(--border);background:var(--panel);cursor:pointer;user-select:none;transition:background .15s,border-color .15s}
-.planner-day:hover{border-color:var(--muted)}
-.planner-day.blocked{border-color:var(--red);background:rgba(168,40,40,.07)}
-.planner-day-left{}
+.planner-day{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;margin-bottom:5px;border:2px solid var(--border);background:var(--panel);cursor:pointer;user-select:none}
+.planner-day.blocked{border-color:var(--red);background:rgba(228,0,88,.08)}
 .planner-day-name{font-size:13px;color:var(--text)}
 .planner-day.blocked .planner-day-name{color:var(--red)}
-.planner-day-session{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--blue);margin-top:2px}
-.planner-day-status{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:.06em}
+.planner-day-session{font-size:9px;color:var(--sky);margin-top:2px}
+.planner-day-status{font-size:9px;color:var(--dim);letter-spacing:.06em}
 .planner-day.blocked .planner-day-status{color:var(--red)}
-.planner-adjust{background:rgba(42,108,181,.07);border:1px solid rgba(42,108,181,.18);border-radius:6px;padding:8px 10px;margin:10px 0;font-size:12px;color:var(--blue);line-height:1.55;display:none}
+.planner-adjust{border:2px solid var(--sky);padding:8px 10px;margin:10px 0;font-size:12px;color:var(--sky);line-height:1.55;display:none}
 .planner-adjust.visible{display:block}
-.planner-save{width:100%;padding:11px;background:var(--ember);color:#fff;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-top:6px;transition:background .2s}
-.planner-save:hover{background:var(--ember-dk)}
-.planner-skip{width:100%;padding:8px;background:transparent;color:var(--dim);border:none;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;margin-top:4px;letter-spacing:.06em}
+.planner-save{width:100%;padding:12px;background:var(--red);color:var(--text);border:none;box-shadow:inset -2px -2px 0 #800030,inset 2px 2px 0 #ff6090;font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-top:6px}
+.planner-save:active{box-shadow:inset 2px 2px 0 #800030,inset -2px -2px 0 #ff6090;transform:translate(1px,1px)}
+.planner-skip{width:100%;padding:8px;background:transparent;color:var(--dim);border:none;font-size:11px;cursor:pointer;margin-top:4px;letter-spacing:.06em}
 
 /* ── SETTINGS PANEL ── */
-#settings-overlay{position:fixed;inset:0;background:rgba(26,25,22,.6);z-index:100;display:none;flex-direction:column;justify-content:flex-end;max-width:480px;margin:0 auto}
+#settings-overlay{position:fixed;inset:0;background:rgba(10,10,20,.8);z-index:100;display:none;flex-direction:column;justify-content:flex-end;max-width:480px;margin:0 auto}
 #settings-overlay.open{display:flex}
-.settings-sheet{background:var(--surface);border-radius:16px 16px 0 0;padding:20px 16px 32px;max-height:80vh;overflow-y:auto}
-.settings-title{font-size:16px;font-weight:500;color:var(--text);margin-bottom:16px}
-.settings-row{padding:12px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.settings-sheet{background:var(--surface);border-top:4px solid var(--gold);padding:20px 16px 32px;max-height:80vh;overflow-y:auto}
+.settings-title{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--gold);margin-bottom:16px;line-height:1.8}
+.settings-row{padding:12px 0;border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .settings-row:last-child{border-bottom:none}
 .settings-key{font-size:13px;color:var(--text)}
-.settings-val{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);max-width:60%;text-align:right;word-break:break-all}
-.settings-btn{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--blue);background:none;border:1px solid rgba(42,108,181,.3);border-radius:3px;padding:3px 8px;cursor:pointer;letter-spacing:.06em}
-.settings-btn.danger{color:var(--red);border-color:rgba(168,40,40,.3)}
+.settings-val{font-size:11px;color:var(--dim);max-width:55%;text-align:right;word-break:break-all}
+.settings-btn{font-size:10px;color:var(--sky);background:none;border:2px solid var(--sky);padding:4px 10px;cursor:pointer}
+.settings-btn.danger{color:var(--red);border-color:var(--red)}
+.settings-date-input{background:var(--panel);border:2px solid var(--gold);color:var(--text);font-size:12px;padding:4px 6px;max-width:130px}
 
 /* ── ERROR / EMPTY ── */
-.error-banner{background:rgba(168,40,40,.08);border:1px solid rgba(168,40,40,.2);border-radius:6px;padding:10px 12px;font-size:12px;color:var(--red);margin-bottom:8px}
-.strava-reconnect{width:100%;padding:10px;background:var(--ember);color:#fff;border:none;border-radius:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-top:8px}
+.error-banner{border:2px solid var(--red);padding:10px 12px;font-size:12px;color:var(--red);margin-bottom:8px;background:rgba(228,0,88,.08)}
+.strava-reconnect{width:100%;padding:10px;background:var(--red);color:var(--text);border:none;font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-top:8px}
 
 /* ── MILESTONE ── */
-.milestone-banner{background:rgba(212,82,26,.06);border:1px solid rgba(212,82,26,.2);border-radius:6px;padding:10px 12px;margin-bottom:10px}
-.milestone-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ember);margin-bottom:3px}
+.milestone-banner{border:2px solid var(--gold);padding:10px 12px;margin-bottom:10px;background:rgba(248,184,0,.06)}
+.milestone-label{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--gold);text-transform:uppercase;margin-bottom:4px}
 .milestone-text{font-size:12px;color:var(--secondary)}
 
 /* ── SETTINGS GEAR ── */
-.gear-btn{position:fixed;top:12px;right:16px;width:32px;height:32px;background:var(--surface);border:1px solid var(--border);border-radius:50%;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:50;font-size:14px}
+.gear-btn{position:fixed;top:12px;right:16px;width:32px;height:32px;background:var(--surface);border:2px solid var(--border);display:none;align-items:center;justify-content:center;cursor:pointer;z-index:50;font-size:14px;color:var(--gold)}
 .gear-btn.visible{display:flex}
 
 /* ── MISC ── */
@@ -261,9 +268,9 @@ body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',system-u
 
   <div class="ob-step locked" id="step3">
     <div class="ob-step-num">Step 03</div>
-    <div class="ob-step-title">When does Week 1 start?</div>
-    <div class="ob-step-detail">Pick the Monday your 12-week plan begins. Everything anchors to this date.</div>
-    <input class="ob-input" id="ob-start-date" type="date" disabled>
+    <div class="ob-step-title">When is your race?</div>
+    <div class="ob-step-detail">Pick your target race date. The 12-week plan builds backward from it — the goal is fixed, the timeline is flexible.</div>
+    <input class="ob-input" id="ob-race-date" type="date" disabled>
     <div class="ob-status" id="date-status"></div>
   </div>
 
@@ -646,21 +653,176 @@ const Strava = {
 };
 
 // ═══════════════════════════════════════════════════════════
+// RUN CLASSIFIER (stream-based)
+// ═══════════════════════════════════════════════════════════
+const RunClassifier = {
+  getCached() { return S.get('run_classifications') || {}; },
+
+  saveAll(map) { S.set('run_classifications', map); },
+
+  // Classify using velocity_smooth stream (m/s array) + activity metadata
+  classify(activity, stream) {
+    const name = (activity.name || '').toLowerCase();
+    if (/\binterval|fartlek|repeat|speed work\b/.test(name)) return 'interval';
+    if (/\btempo|threshold\b/.test(name)) return 'tempo';
+    if (/\beasy|recovery|slow\b/.test(name)) return 'easy';
+    if (/\blong run\b/.test(name)) return 'long';
+
+    if (activity.distance >= 10000) return 'long';
+
+    if (!stream || stream.length < 20) {
+      // Fallback: avg pace only
+      const p = activity.moving_time / (activity.distance / 1000);
+      if (activity.distance >= 9000) return 'long';
+      if (p > 405) return 'easy';
+      if (p >= 355 && p <= 405) return 'tempo';
+      return 'interval';
+    }
+
+    // Convert m/s → sec/km, discard zeroes/outliers
+    const paces = stream.map(v => v > 0.5 ? 1000 / v : null).filter(p => p && p < 900);
+    if (paces.length < 10) return 'easy';
+
+    const mean = paces.reduce((a,b)=>a+b,0)/paces.length;
+    const variance = paces.reduce((a,p)=>a+(p-mean)**2,0)/paces.length;
+    const stdDev = Math.sqrt(variance);
+    const cv = stdDev / mean; // coefficient of variation
+
+    // Count fast↔slow transitions (each = one rep boundary)
+    const fastThresh = mean - stdDev * 0.9;
+    let inFast = false, transitions = 0, fastBurst = 0, burstCount = 0;
+    for (const p of paces) {
+      if (p < fastThresh) {
+        if (!inFast) { inFast = true; transitions++; }
+        fastBurst++;
+      } else {
+        if (inFast) { inFast = false; transitions++; if (fastBurst >= 20) burstCount++; fastBurst = 0; }
+      }
+    }
+    if (inFast && fastBurst >= 20) burstCount++;
+
+    if (cv > 0.18 && burstCount >= 2 && transitions >= 4) return 'interval';
+    if (cv < 0.13 && mean < 410 && activity.moving_time > 1200) return 'tempo';
+    if (activity.distance >= 9000) return 'long';
+    return 'easy';
+  },
+
+  async fetchAndClassify(activity, token) {
+    try {
+      const res = await fetch(
+        `${STRAVA_API}/activities/${activity.id}/streams?keys=velocity_smooth&key_by_type=true`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const data = res.ok ? await res.json() : {};
+      return this.classify(activity, data.velocity_smooth?.data || null);
+    } catch {
+      return this.classify(activity, null);
+    }
+  },
+
+  // Classify up to 30 recent unclassified runs, updating cache
+  async classifyRecent(activities, token) {
+    const cached = this.getCached();
+    const cutoff = Date.now() - 56 * 86400000; // 8 weeks
+    const todo = activities.filter(a => {
+      const t = new Date(a.start_date_local || a.start_local).getTime();
+      return a.sport_type === 'Run' && t > cutoff && !cached[String(a.id)];
+    }).slice(0, 30);
+
+    for (let i = 0; i < todo.length; i++) {
+      const a = todo[i];
+      cached[String(a.id)] = await this.fetchAndClassify(a, token);
+      if (i > 0 && i % 5 === 0) await new Promise(r => setTimeout(r, 150));
+    }
+    this.saveAll(cached);
+    return cached;
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+// SESSION MATCHER — prescribed vs actual
+// ═══════════════════════════════════════════════════════════
+const SessionMatcher = {
+  // Returns array of match objects for current week's sessions
+  match(weekData, activities, classifications) {
+    const today = new Date();
+    const weekStart = weekMonday(today);
+    const runs = activities.filter(a => a.sport_type === 'Run' && a.moving_time > 300);
+    const dayOrder = { Monday:1, Tuesday:2, Wednesday:3, Thursday:4, Friday:5, Saturday:6, Sunday:0 };
+
+    return (weekData?.sessions || []).map(session => {
+      const sessionDayIdx = dayOrder[session.day];
+      const sessionDate = new Date(weekStart);
+      const diff = (sessionDayIdx - weekStart.getDay() + 7) % 7;
+      sessionDate.setDate(weekStart.getDate() + diff);
+
+      if (sessionDate > today) return { session, actualRun: null, match: 'upcoming' };
+
+      const window = 36 * 3600000;
+      const actual = runs.find(r => {
+        const d = new Date(r.start_date_local || r.start_local);
+        return Math.abs(d.getTime() - sessionDate.getTime()) < window;
+      });
+
+      if (!actual) return { session, actualRun: null, match: 'missed' };
+
+      const actualType = classifications[String(actual.id)] || 'unknown';
+      const actualPace = actual.moving_time / (actual.distance / 1000);
+      const isMatch = actualType === session.type ||
+        (session.type === 'long' && actual.distance >= 9000) ||
+        actualType === 'unknown';
+
+      return { session, actualRun: actual, actualType, actualPace,
+        match: isMatch ? 'match' : 'mismatch',
+        note: isMatch ? null : `Prescribed ${session.type} — ran ${actualType} at ${fmtPace(actualPace)}/km` };
+    });
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
 // PLAN ENGINE
 // ═══════════════════════════════════════════════════════════
 const PlanEngine = {
-  // Returns { weekNum, phase, phaseName, weekData, raceDate, recalibrationNote }
-  compute(planStartDate, activities) {
-    const start = new Date(planStartDate);
-    const now = new Date();
-    const rawWeek = Math.floor(daysBetween(start, now) / 7) + 1;
+  // Resolve race date and plan start from storage (supports legacy plan_start_date)
+  resolveDates() {
+    const storedRace = S.get('race_date');
+    const storedStart = S.get('plan_start_date');
 
-    // Check for missed weeks in past
-    let missedWeeks = 0;
+    if (storedRace) {
+      const raceDate = new Date(storedRace + 'T12:00:00');
+      // Plan start = Monday of race week - 11 weeks
+      const dow = raceDate.getDay();
+      const toMon = dow === 0 ? -6 : 1 - dow;
+      const raceMon = new Date(raceDate);
+      raceMon.setDate(raceDate.getDate() + toMon);
+      const planStart = new Date(raceMon);
+      planStart.setDate(raceMon.getDate() - 77);
+      return { raceDate, planStart };
+    }
+    if (storedStart) {
+      const planStart = new Date(storedStart + 'T12:00:00');
+      const raceDate = new Date(planStart);
+      raceDate.setDate(planStart.getDate() + 83); // Mon + 11w6d = Sunday
+      // Migrate to race_date key
+      S.set('race_date', raceDate.toISOString().slice(0, 10));
+      return { raceDate, planStart };
+    }
+    return null;
+  },
+
+  // Returns { weekNum, phase, weekData, raceDate, planStart, missedWeeks, recalibrationNote }
+  compute(activities) {
+    const dates = this.resolveDates();
+    if (!dates) throw new Error('No plan configured');
+    const { raceDate, planStart } = dates;
+    const now = new Date();
+
+    const rawWeek = Math.floor(Math.max(0, daysBetween(planStart, now)) / 7) + 1;
     const runs = activities.filter(a => a.sport_type === 'Run' && a.moving_time > 300 && a.distance > 1000);
 
+    let missedWeeks = 0;
     for (let w = 1; w < Math.min(rawWeek, 12); w++) {
-      const wStart = new Date(start); wStart.setDate(start.getDate() + (w-1)*7);
+      const wStart = new Date(planStart); wStart.setDate(planStart.getDate() + (w-1)*7);
       const wEnd   = new Date(wStart); wEnd.setDate(wStart.getDate() + 7);
       const weekRuns = runs.filter(a => {
         const d = new Date(a.start_date_local || a.start_local);
@@ -669,16 +831,12 @@ const PlanEngine = {
       if (weekRuns.length === 0 && wStart < now) missedWeeks = Math.min(missedWeeks + 1, 2);
     }
 
-    const currentWeek = Math.min(Math.max(rawWeek - missedWeeks, 1), 12);
+    const currentWeek = Math.min(Math.max(rawWeek, 1), 12);
     const weekData = PLAN.weeks[currentWeek - 1];
     const phase = PLAN.phases.find(p => p.weeks.includes(currentWeek));
 
-    // Race date = plan start + 11 weeks (start of week 12) + 6 days (Sunday)
-    const raceDate = new Date(start);
-    raceDate.setDate(start.getDate() + (12-1)*7 + 6 + missedWeeks*7);
-
-    return { weekNum: currentWeek, phase, weekData, raceDate, missedWeeks,
-      recalibrationNote: missedWeeks > 0 ? `Plan adjusted by ${missedWeeks} week${missedWeeks>1?'s':''} — race date updated.` : null };
+    return { weekNum: currentWeek, phase, weekData, raceDate, planStart, missedWeeks,
+      recalibrationNote: missedWeeks > 0 ? `Plan adjusted by ${missedWeeks} missed week${missedWeeks>1?'s':''}` : null };
   },
 
   // Returns sessions for this week, respecting blockers
@@ -711,7 +869,7 @@ const PlanEngine = {
   },
 
   // Get today's session
-  todaySession(weekData, blockers, planStartDate) {
+  todaySession(weekData, blockers=[]) {
     const { sessions, movedNotes } = this.scheduledSessions(weekData, blockers);
     const today = new Date();
     const dayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][today.getDay()];
@@ -723,7 +881,7 @@ const PlanEngine = {
 // ANALYTICS ENGINE
 // ═══════════════════════════════════════════════════════════
 const Analytics = {
-  compute(activities) {
+  compute(activities, classifications = {}) {
     const now = new Date();
     const runs = activities.filter(a => (a.sport_type==='Run') && a.moving_time > 300 && a.distance > 800);
     const recentRuns = runs.slice(-20); // last 20 for trends
@@ -793,17 +951,22 @@ const Analytics = {
     // Avg pace over last 4 weeks
     const avgPace4Wk = r30.length ? avgPace30 : 0;
 
-    // Tempo sessions (runs where avg pace between 360-380 sec/km and distance > 4km and duration > 15min)
-    const tempoSessions = pacedRuns.filter(r => r.paceSecPerKm >= 360 && r.paceSecPerKm <= 380 && r.distance > 4000 && r.moving_time > 900).length;
+    // Tempo sessions — use stream classification if available
+    const tempoSessions = pacedRuns.filter(r =>
+      classifications[String(r.id)] === 'tempo' ||
+      (!classifications[String(r.id)] && r.paceSecPerKm >= 355 && r.paceSecPerKm <= 400 && r.distance > 4000 && r.moving_time > 900)
+    ).length;
 
-    // Effort distribution (last 30d)
-    const effortCounts = { easy:0, interval:0, tempo:0, long:0, other:0 };
+    // Effort distribution (last 30d) — stream classification takes priority
+    const effortCounts = { easy:0, interval:0, tempo:0, long:0 };
     for (const r of r30) {
+      const cls = classifications[String(r.id)];
+      if (cls && cls !== 'unknown') { effortCounts[cls] = (effortCounts[cls]||0) + 1; continue; }
       const p = r.paceSecPerKm;
-      if (p > 400) effortCounts.easy++;
-      else if (p >= 360 && p <= 400) effortCounts.tempo++;
-      else if (p < 360) effortCounts.interval++;
       if (r.distance > 9000) effortCounts.long++;
+      else if (p > 405) effortCounts.easy++;
+      else if (p >= 355 && p <= 405) effortCounts.tempo++;
+      else effortCounts.interval++;
     }
 
     // Weekly volumes (last 8 weeks)
@@ -875,9 +1038,9 @@ const Gamification = {
 // ANTHROPIC BRIEFING
 // ═══════════════════════════════════════════════════════════
 const Briefing = {
-  async generate(analyticsData, planData, weekBlockers=[]) {
+  async generate(analyticsData, planData, weekBlockers=[], sessionMatches=[], classifications={}) {
     const apiKey = S.get('anthropic_api_key');
-    if (!apiKey) throw new Error('No API key');
+    if (!apiKey) throw new Error('No API key — add it in Settings');
 
     const { avgPace30, r30, prStreak, projSecs, sortedRuns, lateRuns } = analyticsData;
     const { weekNum, phase, weekData, raceDate, missedWeeks } = planData;
@@ -886,6 +1049,7 @@ const Briefing = {
       date: r.date.toLocaleDateString('en-CA'),
       km: r.kmDistance.toFixed(1),
       pace: fmtPace(r.paceSecPerKm),
+      type: classifications[String(r.id)] || 'unknown',
       prs: r.pr_count || 0,
       hour: r.hour
     }));
@@ -894,39 +1058,48 @@ const Briefing = {
     const today = new Date();
     const dayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][today.getDay()];
 
-    const prompt = `You are the daily running coach for Michael Strong. Write a three-part briefing for his running app.
+    const mismatches = sessionMatches.filter(m => m.match === 'mismatch' || m.match === 'missed');
+    const mismatchBlock = mismatches.length
+      ? `\nSESSION COMPLIANCE THIS WEEK:\n${mismatches.map(m =>
+          m.match === 'missed'
+            ? `- ${m.session.day}: prescribed ${m.session.type} — no run logged`
+            : `- ${m.session.day}: prescribed ${m.session.type} — actually did ${m.actualType} at ${fmtPace(m.actualPace)}/km (${m.note})`
+        ).join('\n')}`
+      : '';
+
+    const prompt = `You are the daily running coach for Michael Strong. Write a three-part briefing.
 
 CONTEXT:
 - Today: ${today.toLocaleDateString('en-CA')} (${dayName})
-- Training week: ${weekNum} of 12 (${phase?.name || ''}: ${phase?.label || ''})
-- Race: Sub-60 minute 10K in ${daysToRace} days (${raceDate.toLocaleDateString('en-CA')})
-- Current 10K projection: ${projSecs > 0 ? fmtTime(Math.round(projSecs)) : 'unknown'}
-- PR streak: ${prStreak} consecutive runs with Strava segment PRs
-- Avg pace last 30 days: ${avgPace30 > 0 ? fmtPace(avgPace30) + '/km' : 'no data'}
-- Late night runner: ${lateRuns} runs after 8pm total
-${missedWeeks > 0 ? `- Plan recalibrated: ${missedWeeks} missed week(s) absorbed` : ''}
-${weekBlockers.length > 0 ? `- This week's blocked evenings: ${weekBlockers.join(', ')}` : ''}
+- Week: ${weekNum} of 12 (${phase?.name || ''}: ${phase?.label || ''})
+- Race: Sub-60 10K in ${daysToRace} days (${raceDate.toLocaleDateString('en-CA')})
+- Projection: ${projSecs > 0 ? fmtTime(Math.round(projSecs)) : 'unknown'}
+- PR streak: ${prStreak}  Avg pace/30d: ${avgPace30 > 0 ? fmtPace(avgPace30)+'/km' : 'none'}
+- Night runs total: ${lateRuns}
+${missedWeeks > 0 ? `- Missed weeks: ${missedWeeks}` : ''}
+${weekBlockers.length ? `- Blocked evenings: ${weekBlockers.join(', ')}` : ''}
+${mismatchBlock}
 
-LAST 5 RUNS:
-${last5.map(r => `- ${r.date}: ${r.km}km @ ${r.pace}/km, ${r.prs} PRs, ${r.hour >= 20 ? 'night run' : r.hour < 12 ? 'morning' : 'afternoon'}`).join('\n')}
+LAST 5 RUNS (classified by stream analysis):
+${last5.map(r => `- ${r.date}: ${r.km}km @ ${r.pace}/km [${r.type}], ${r.prs} PRs, ${r.hour>=20?'night':r.hour<12?'morning':'afternoon'}`).join('\n')}
 
-TODAY'S PRESCRIBED SESSION:
-${weekData?.sessions?.find(s=>s.day===dayName) ? JSON.stringify(weekData.sessions.find(s=>s.day===dayName)) : 'Rest day'}
+TODAY'S SESSION: ${weekData?.sessions?.find(s=>s.day===dayName) ? JSON.stringify(weekData.sessions.find(s=>s.day===dayName)) : 'Rest day'}
 
-Return ONLY valid JSON in exactly this format:
-{
-  "narrative": "One or two sentences in past-literary style. About the training moment, not the person. Can reference the title The Night Owl if fitting.",
-  "coaching": "2-4 sentences of direct, specific coaching. Reference actual numbers. Tell him what matters today.",
-  "badges": [{"label":"...", "type":"good|warning|info"}]
-}
-2-4 badges. Types: good=green, warning=amber, info=blue.`;
+If there were session mismatches (e.g. prescribed intervals but ran easy), explicitly acknowledge what happened and what it means for the training block. Be direct, not soft.
+
+Return ONLY valid JSON:
+{"narrative":"1-2 sentences, literary past tense, about the training moment","coaching":"2-4 sentences direct coaching referencing actual numbers and any session mismatches","badges":[{"label":"...","type":"good|warning|info"}]}
+2-4 badges.`;
 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 400, messages: [{ role:'user', content: prompt }] })
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 500, messages: [{ role:'user', content: prompt }] })
     });
-    if (!res.ok) throw new Error('Anthropic API error');
+    if (!res.ok) {
+      const errText = await res.text().catch(() => '');
+      throw new Error(`API ${res.status}: ${errText.slice(0,120)}`);
+    }
     const data = await res.json();
     const text = data.content[0].text.trim();
     return JSON.parse(text.match(/\{[\s\S]*\}/)[0]);
@@ -959,22 +1132,30 @@ const UI = {
     document.getElementById('race-countdown').innerHTML = `Race in <span>${daysToRace} days</span> · ${raceDate.toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'})}`;
   },
 
-  renderToday(session, movedNotes, weekData, planStartDate) {
+  renderToday(session, movedNotes, sessionMatches=[]) {
     const today = new Date();
     const dayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][today.getDay()];
     document.getElementById('today-label').textContent = `Today · ${today.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'})}`;
 
     const el = document.getElementById('today-session');
     if (!session) {
-      el.innerHTML = `<div class="session-rest">Rest day — no session scheduled. Recovery is part of the plan.</div>`;
+      el.innerHTML = `<div class="session-rest">Rest day — recovery is part of the plan.</div>`;
     } else {
       const typeColors = { easy:'chip-green', interval:'chip-ember', tempo:'chip-blue', long:'chip-amber', race:'chip-ember' };
+      // Check if yesterday's session was a mismatch
+      const recentMismatch = sessionMatches.find(m => m.match === 'mismatch');
+      const mismatchHtml = recentMismatch
+        ? `<div class="session-mismatch">⚠ ${recentMismatch.note}</div>` : '';
       el.innerHTML = `<div class="session-card">
         <div class="session-type">${session.type} · ${session.dist}</div>
         <div class="session-name">${session.name}</div>
         <div class="session-detail">${session.desc}</div>
         <div style="margin-top:8px"><span class="chip ${typeColors[session.type]||'chip-dim'}">${session.pace}</span></div>
+        ${mismatchHtml}
       </div>`;
+    }
+    if (movedNotes?.length) {
+      el.innerHTML += `<div class="section-note" style="margin-top:6px">${movedNotes.join(' ')}</div>`;
     }
   },
 
@@ -992,12 +1173,12 @@ const UI = {
     `;
   },
 
-  renderWeekChecklist(weekData, blockers, activities) {
+  renderWeekChecklist(weekData, blockers, activities, classifications={}) {
     const { sessions } = PlanEngine.scheduledSessions(weekData, blockers);
     const el = document.getElementById('week-checklist');
     const today = new Date();
     const dayIndex = { Sunday:0,Monday:1,Tuesday:2,Wednesday:3,Thursday:4,Friday:5,Saturday:6 };
-    const todayIdx = today.getDay() === 0 ? 7 : today.getDay(); // Mon=1..Sun=7
+    const todayIdx = today.getDay() === 0 ? 7 : today.getDay();
 
     const runs = activities.filter(a => a.sport_type==='Run' && a.moving_time>300);
     const thisWeekStart = weekMonday(today);
@@ -1009,20 +1190,23 @@ const UI = {
     el.innerHTML = sessions.map(s => {
       const sIdx = dayIndex[s.day] || 0;
       const sOrder = s.day === 'Sunday' ? 7 : sIdx;
-      const isDone = thisWeekRuns.some(r => {
-        const d = new Date(r.start_date_local||r.start_local);
-        return (d.getDay()===0?7:d.getDay()) === sOrder;
-      });
+      const matchRun = thisWeekRuns.find(r => (new Date(r.start_date_local||r.start_local).getDay()===0?7:new Date(r.start_date_local||r.start_local).getDay()) === sOrder);
+      const isDone = !!matchRun;
       const isToday = sOrder === todayIdx;
       const isPast = sOrder < todayIdx;
       const isMissed = isPast && !isDone;
 
-      const dotClass = isDone ? 'dot-done' : isToday ? 'dot-today' : isMissed ? 'dot-missed' : 'dot-upcoming';
-      const labelClass = isDone ? 'done' : isToday ? 'today' : isMissed ? 'missed' : '';
+      const actualType = matchRun ? (classifications[String(matchRun.id)] || null) : null;
+      const isMismatch = isDone && actualType && actualType !== s.type && actualType !== 'unknown';
+      const actualNote = isMismatch ? `actual: ${actualType}` : isDone ? 'done' : null;
+
+      const dotClass = isDone ? (isMismatch ? 'dot-today' : 'dot-done') : isToday ? 'dot-today' : isMissed ? 'dot-missed' : 'dot-upcoming';
+      const labelClass = isDone ? (isMismatch ? '' : 'done') : isToday ? 'today' : isMissed ? 'missed' : '';
+
       return `<div class="checklist-item">
         <div class="check-dot ${dotClass}"></div>
-        <div class="check-label ${labelClass}">${s.day} ${s.type} — ${isDone?'done':isToday?'tonight':isMissed?'missed':'upcoming'}</div>
-        <span class="mono" style="font-size:9px;color:var(--dim)">${s.dist}</span>
+        <div class="check-label ${labelClass}">${s.day} — ${s.type}${isToday&&!isDone?' (tonight)':isMissed?' MISSED':''}</div>
+        ${actualNote ? `<span class="check-actual${isMismatch?' mismatch':''}">${actualNote}</span>` : `<span style="font-size:9px;color:var(--dim)">${s.dist}</span>`}
       </div>`;
     }).join('');
   },
@@ -1299,7 +1483,9 @@ const Onboarding = {
   },
 
   init() {
-    document.getElementById('ob-start-date').value = weekMonday().toISOString().slice(0,10);
+    // Pre-fill race date ~12 weeks from today
+    const defaultRace = new Date(); defaultRace.setDate(defaultRace.getDate() + 84);
+    document.getElementById('ob-race-date').value = defaultRace.toISOString().slice(0,10);
     document.getElementById('ob-btn').onclick = () => this.handleStep();
 
     const params = new URLSearchParams(location.search);
@@ -1378,18 +1564,18 @@ const Onboarding = {
       setTimeout(() => { this.step = 3; this.activateStep(3); }, 600);
 
     } else if (this.step === 3) {
-      const dateVal = document.getElementById('ob-start-date').value;
+      const dateVal = document.getElementById('ob-race-date').value;
       if (!dateVal) { this.setStatus('date-status', 'error', 'Please pick a date.'); return; }
       const d = new Date(dateVal + 'T12:00:00');
-      if (d.getDay() !== 1) {
-        this.setStatus('date-status', 'error', 'Please pick a Monday.');
-        document.getElementById('ob-start-date').classList.add('error');
-        setTimeout(() => document.getElementById('ob-start-date').classList.remove('error'), 400);
+      if (d <= new Date()) {
+        this.setStatus('date-status', 'error', 'Race date must be in the future.');
+        document.getElementById('ob-race-date').classList.add('error');
+        setTimeout(() => document.getElementById('ob-race-date').classList.remove('error'), 400);
         return;
       }
-      S.set('plan_start_date', dateVal);
+      S.set('race_date', dateVal);
       S.set('onboarding_complete', true);
-      this.setStatus('date-status', 'success', 'Plan start date set — launching…');
+      this.setStatus('date-status', 'success', 'Race date set — launching…');
       document.getElementById('step3').classList.remove('active');
       document.getElementById('step3').classList.add('done');
       document.getElementById('ob-btn').style.display = 'none';
@@ -1411,7 +1597,7 @@ const Onboarding = {
       document.getElementById('ob-api-key').focus();
       document.getElementById('ob-btn').textContent = 'Save key & continue →';
     } else if (num === 3) {
-      document.getElementById('ob-start-date').disabled = false;
+      document.getElementById('ob-race-date').disabled = false;
       document.getElementById('ob-btn').textContent = 'Start training →';
     }
   },
@@ -1422,26 +1608,66 @@ const Onboarding = {
 // ═══════════════════════════════════════════════════════════
 const Settings = {
   open() {
-    const rows = [
-      { label: 'Plan start', val: S.get('plan_start_date') || '—', action: null },
-      { label: 'Strava client ID', val: String(S.get('strava_client_id') || '—'), action: null },
-      { label: 'Anthropic key', val: (S.get('anthropic_api_key')||'—').slice(0,12) + '…', action: null },
-      { label: 'Reconnect Strava', val: '', action: 'reconnect' },
-      { label: 'Reset everything', val: '', action: 'reset', danger: true },
-    ];
-    document.getElementById('settings-rows').innerHTML = rows.map(r => `
+    const raceDate = S.get('race_date');
+    const raceDateFmt = raceDate
+      ? new Date(raceDate + 'T12:00:00').toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'})
+      : '—';
+    document.getElementById('settings-rows').innerHTML = `
       <div class="settings-row">
-        <span class="settings-key">${r.label}</span>
-        ${r.action ? `<button class="settings-btn${r.danger?' danger':''}" onclick="Settings.action('${r.action}')">${r.action === 'reconnect' ? 'Reconnect' : 'Reset'}</button>` : `<span class="settings-val">${r.val}</span>`}
+        <span class="settings-key">Race date</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="date" id="race-date-input" class="settings-date-input" value="${raceDate||''}" style="display:none">
+          <span class="settings-val" id="race-date-display">${raceDateFmt}</span>
+          <button class="settings-btn" onclick="Settings.editRaceDate()">Change</button>
+        </div>
       </div>
-    `).join('');
+      <div class="settings-row">
+        <span class="settings-key">Strava client ID</span>
+        <span class="settings-val">${S.get('strava_client_id')||'—'}</span>
+      </div>
+      <div class="settings-row">
+        <span class="settings-key">Anthropic key</span>
+        <span class="settings-val">${(S.get('anthropic_api_key')||'—').slice(0,14)}…</span>
+      </div>
+      <div class="settings-row">
+        <span class="settings-key">Clear briefing cache</span>
+        <button class="settings-btn" onclick="S.del('briefing_cache');Settings.close();App.generateBriefing(App.lastBlockers,[])">Refresh</button>
+      </div>
+      <div class="settings-row">
+        <span class="settings-key">Reconnect Strava</span>
+        <button class="settings-btn" onclick="Settings.action('reconnect')">Reconnect</button>
+      </div>
+      <div class="settings-row">
+        <span class="settings-key">Reset everything</span>
+        <button class="settings-btn danger" onclick="Settings.action('reset')">Reset</button>
+      </div>`;
     document.getElementById('settings-overlay').classList.add('open');
-    document.getElementById('settings-bg-tap').onclick = () => document.getElementById('settings-overlay').classList.remove('open');
+    document.getElementById('settings-bg-tap').onclick = () => this.close();
+  },
+
+  close() { document.getElementById('settings-overlay').classList.remove('open'); },
+
+  editRaceDate() {
+    const input = document.getElementById('race-date-input');
+    const display = document.getElementById('race-date-display');
+    input.style.display = 'block'; display.style.display = 'none';
+    input.focus();
+    input.onchange = () => {
+      if (!input.value) return;
+      const d = new Date(input.value + 'T12:00:00');
+      if (d > new Date()) {
+        S.set('race_date', input.value);
+        display.textContent = d.toLocaleDateString('en',{month:'short',day:'numeric',year:'numeric'});
+        input.style.display = 'none'; display.style.display = 'inline';
+        this.close();
+        App.run();
+      }
+    };
   },
 
   action(type) {
     if (type === 'reconnect') {
-      document.getElementById('settings-overlay').classList.remove('open');
+      this.close();
       S.del('strava_access_token'); S.del('strava_refresh_token'); S.del('strava_token_expiry');
       S.del('onboarding_complete'); location.reload();
     } else if (type === 'reset') {
@@ -1458,6 +1684,8 @@ const App = {
   analyticsData: null,
   planData: null,
   gamData: null,
+  classifications: {},
+  lastBlockers: [],
 
   async launch() {
     document.getElementById('onboarding').style.display = 'none';
@@ -1475,15 +1703,16 @@ const App = {
   },
 
   async run() {
-    const planStartDate = S.get('plan_start_date');
     const monKey = weekMonday(new Date()).toISOString().slice(0,10);
     const blockers = S.get(`week_blockers_${monKey}`) || [];
+    this.lastBlockers = blockers;
+    this.classifications = RunClassifier.getCached();
 
-    // Show cached data first
+    // Render from cache immediately
     const cached = S.get('activities_cache');
     if (cached) {
       this.activities = cached;
-      this.renderAll(blockers, planStartDate, true);
+      this.renderAll(blockers, false);
     }
 
     // Fetch fresh Strava data
@@ -1492,57 +1721,68 @@ const App = {
       document.getElementById('strava-status-text').textContent = 'strava';
       this.activities = await Strava.getActivities();
       S.set('activities_cache', this.activities);
-      // Store timestamp of most recent activity for incremental fetches
       const latest = this.activities.reduce((max, a) => {
         const t = new Date(a.start_date_local || a.start_local).getTime();
         return t > max ? t : max;
       }, 0);
       if (latest) S.set('activities_cache_ts', Math.floor(latest / 1000));
-      this.renderAll(blockers, planStartDate, false);
+      this.renderAll(blockers, false);
+
+      // Now classify recent runs in background, then re-render
+      try {
+        const token = await Strava.ensureToken();
+        this.classifications = await RunClassifier.classifyRecent(this.activities, token);
+        this.renderAll(blockers, true); // silent re-render with classifications
+      } catch (e) { console.warn('Classification error:', e); }
+
     } catch (e) {
       console.error('Strava error:', e);
       document.getElementById('strava-status-dot').className = 'strava-dot offline';
-      if (!cached) document.getElementById('today-session').innerHTML = '<div class="error-banner">Strava connection lost.<button class="strava-reconnect" onclick="S.del(\'onboarding_complete\');location.reload()">Reconnect</button></div>';
+      if (!cached) document.getElementById('today-session').innerHTML =
+        '<div class="error-banner">Strava connection lost.<button class="strava-reconnect" onclick="S.del(\'onboarding_complete\');location.reload()">Reconnect</button></div>';
     }
   },
 
-  renderAll(blockers, planStartDate, fromCache) {
-    this.analyticsData = Analytics.compute(this.activities);
-    this.planData = { ...PlanEngine.compute(planStartDate, this.activities), ...this.analyticsData };
-    this.gamData = Gamification.evaluate(this.analyticsData);
+  renderAll(blockers, skipBriefing=false) {
+    try {
+      this.analyticsData = Analytics.compute(this.activities, this.classifications);
+      this.planData = { ...PlanEngine.compute(this.activities), ...this.analyticsData };
+      this.gamData = Gamification.evaluate(this.analyticsData);
 
-    UI.renderHeader(this.planData, this.gamData);
-    const { session, movedNotes, allSessions } = PlanEngine.todaySession(this.planData.weekData, blockers, planStartDate);
-    UI.renderToday(session, movedNotes, this.planData.weekData, planStartDate);
-    UI.renderWeekChecklist(this.planData.weekData, blockers, this.activities);
-    UI.renderStats(this.analyticsData);
-    UI.renderProjection(this.analyticsData);
-    UI.renderVolumeChart(this.analyticsData.weeklyVols);
-    UI.renderGamification(this.gamData, this.analyticsData);
+      UI.renderHeader(this.planData, this.gamData);
+      const { session, movedNotes } = PlanEngine.todaySession(this.planData.weekData, blockers);
+      const sessionMatches = SessionMatcher.match(this.planData.weekData, this.activities, this.classifications);
+      UI.renderToday(session, movedNotes, sessionMatches);
+      UI.renderWeekChecklist(this.planData.weekData, blockers, this.activities, this.classifications);
+      UI.renderStats(this.analyticsData);
+      UI.renderProjection(this.analyticsData);
+      UI.renderVolumeChart(this.analyticsData.weeklyVols);
+      UI.renderGamification(this.gamData, this.analyticsData);
 
-    // Generate briefing
-    this.generateBriefing(blockers);
-
-    // Sunday planner
-    if (this.planData.weekData) Planner.open(this.planData.weekData);
+      if (!skipBriefing) this.generateBriefing(blockers, sessionMatches);
+      if (this.planData.weekData) Planner.open(this.planData.weekData);
+    } catch(e) { console.error('renderAll error:', e); }
   },
 
-  async generateBriefing(blockers) {
+  async generateBriefing(blockers, sessionMatches=[]) {
     const cached = S.get('briefing_cache');
     const cacheAge = cached ? (Date.now() - (cached._ts||0)) : Infinity;
-    if (cacheAge < 3 * 3600 * 1000 && cached.narrative) { // Use cache if < 3 hours old
+    if (cacheAge < 3 * 3600 * 1000 && cached?.narrative) {
       UI.renderBriefing(cached, false); return;
     }
-    if (cached) UI.renderBriefing(cached, true); // Show stale while loading
+    if (cached?.narrative) UI.renderBriefing(cached, true);
     try {
-      const briefing = await Briefing.generate(this.analyticsData, this.planData, blockers);
+      const briefing = await Briefing.generate(this.analyticsData, this.planData, blockers, sessionMatches, this.classifications);
       briefing._ts = Date.now();
       S.set('briefing_cache', briefing);
       UI.renderBriefing(briefing, false);
     } catch (e) {
       console.error('Briefing error:', e);
-      if (!cached) document.getElementById('briefing-content').innerHTML = '<div class="empty-state">Briefing unavailable — check your Anthropic API key in settings.</div>';
       document.getElementById('briefing-spinner').style.display = 'none';
+      if (!cached?.narrative) {
+        document.getElementById('briefing-content').innerHTML =
+          `<div class="briefing-error"><div class="briefing-error-msg">${e.message}</div><button class="briefing-retry" onclick="App.generateBriefing(App.lastBlockers,[])">RETRY</button></div>`;
+      }
     }
   }
 };
